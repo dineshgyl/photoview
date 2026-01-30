@@ -40,6 +40,7 @@ const (
 	EnvDisableRawProcessing      EnvironmentVariable = "PHOTOVIEW_DISABLE_RAW_PROCESSING"
 	EnvVideoHardwareAcceleration EnvironmentVariable = "PHOTOVIEW_VIDEO_HARDWARE_ACCELERATION"
 	EnvVideoThumbnailOnly        EnvironmentVariable = "PHOTOVIEW_VIDEO_THUMBNAILONLY" // If set, only generate video thumbnails, not web-optimized video copies
+	EnvImageThumbnailOnly        EnvironmentVariable = "PHOTOVIEW_IMAGE_THUMBNAILONLY" // If set, only generate image thumbnails, not web-optimized image copies
 )
 
 // GetName returns the name of the environment variable itself

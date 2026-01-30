@@ -83,15 +83,45 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 		}
 
 		updatedURLs = append(updatedURLs, &mediaURL)
+
 	}
 
 	if videoWebURL == nil && !videoType.IsWebCompatible() {
 
 		if utils.EnvVideoThumbnailOnly.GetBool() {
 			log.Info(ctx,
-				"Video transcoding disabled (thumbnail-only mode)",
+				"Video transcoding disabled (thumbnail-only mode) Skipping web-optimized video generation - Reinsterting original as ContentType:mp4",
 				"video", video.Path,
 			)
+			origVideoPath := video.Path
+			videoMediaName := generateUniqueMediaName(video.Path)
+
+			webMetadata, err := ReadVideoStreamMetadata(origVideoPath)
+			if err != nil {
+				return []*models.MediaURL{}, errors.Wrapf(err, "failed to read metadata for original video as video/mp4 (%s)", video.Title)
+			}
+
+			fileStats, err := os.Stat(origVideoPath)
+			if err != nil {
+				return []*models.MediaURL{}, errors.Wrap(err, "reading file stats of original video as video/mp4")
+			}
+
+			mediaURL := models.MediaURL{
+				MediaID:     video.ID,
+				MediaName:   videoMediaName,
+				Width:       webMetadata.Width,
+				Height:      webMetadata.Height,
+				Purpose:     models.MediaOriginal,
+				ContentType: "video/mp4",
+				FileSize:    fileStats.Size(),
+			}
+
+			if err := ctx.GetDB().Create(&mediaURL).Error; err != nil {
+				return []*models.MediaURL{}, errors.Wrapf(err, "insert original video into database as video/mp4 (%s)", video.Title)
+			}
+
+			updatedURLs = append(updatedURLs, &mediaURL)
+
 		} else {
 			webVideoName := fmt.Sprintf("web_video_%s_%s", path.Base(video.Path), utils.GenerateToken())
 			webVideoName = strings.ReplaceAll(webVideoName, ".", "_")
