@@ -89,12 +89,12 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 	if videoWebURL == nil && !videoType.IsWebCompatible() {
 
 		if utils.EnvVideoThumbnailOnly.GetBool() {
-			log.Info(ctx,
-				"Video transcoding disabled (thumbnail-only mode) Skipping web-optimized video generation - Reinsterting original as ContentType:mp4",
-				"video", video.Path,
-			)
 
 			if videoOriginalURL == nil { // To avoid duplicate insertion of Original video at every scan
+				log.Info(ctx,
+					"Video transcoding disabled (thumbnail-only mode) Skipping web-optimized video generation - Reinsterting original as ContentType:mp4",
+					"video", video.Path,
+				)
 				origVideoPath := video.Path
 				videoMediaName := generateUniqueMediaName(video.Path)
 
