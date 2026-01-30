@@ -8,6 +8,7 @@ import (
 	"github.com/photoview/photoview/api/log"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
 	"github.com/photoview/photoview/api/scanner/scanner_task"
+	"github.com/photoview/photoview/api/utils"
 	"github.com/pkg/errors"
 )
 
@@ -56,16 +57,25 @@ func (t ProcessPhotoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 		}
 
 		if !contentType.IsWebCompatible() {
-			highresName := generateUniqueMediaNamePrefixed("highres", photo.Path, ".jpg")
-			baseImagePath = path.Join(mediaCachePath, highresName)
 
-			highRes, err := generateSaveHighResJPEG(ctx.GetDB(), photo, mediaData, highresName, baseImagePath, nil)
-			if err != nil {
-				return []*models.MediaURL{}, err
+			if utils.EnvImageThumbnailOnly.GetBool() {
+				log.Info(ctx,
+					"Image transcoding disabled (thumbnail-only mode) Skipping high-res image generation",
+					"photo", photo.Path,
+				)
+			} else {
+				highresName := generateUniqueMediaNamePrefixed("highres", photo.Path, ".jpg")
+				baseImagePath = path.Join(mediaCachePath, highresName)
+
+				highRes, err := generateSaveHighResJPEG(ctx.GetDB(), photo, mediaData, highresName, baseImagePath, nil)
+				if err != nil {
+					return []*models.MediaURL{}, err
+				}
+
+				updatedURLs = append(updatedURLs, highRes)
 			}
-
-			updatedURLs = append(updatedURLs, highRes)
 		}
+
 	} else {
 		// Verify that highres photo still exists in cache
 		baseImagePath = path.Join(mediaCachePath, highResURL.MediaName)
