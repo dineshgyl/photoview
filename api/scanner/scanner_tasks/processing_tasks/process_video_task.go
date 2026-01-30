@@ -97,7 +97,7 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 			if videoOriginalURL == nil { // To avoid duplicate insertion of Original video at every scan
 
 				log.Info(ctx,
-					"Reinserting Original video as content type MP4 to allow browser playback on demand",
+					"Video transcoding disabled (thumbnail-only mode) - Reinserting Original video as content type MP4 to allow browser playback on demand",
 					"video", video.Path,
 				)
 
