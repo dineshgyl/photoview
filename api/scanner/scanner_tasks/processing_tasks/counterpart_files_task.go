@@ -20,9 +20,7 @@ func (t CounterpartFilesTask) MediaFound(ctx scanner_task.TaskContext, fileInfo 
 	rawPath, rawExists := media_type.FindRawCounterpart(mediaPath)
 
 	// Only disaply log when we are skipping files.
-	if !fileType.IsSupported() ||
-		(utils.EnvDisableRawProcessing.GetBool() && !fileType.IsWebCompatible()) ||
-		(fileType.IsWebCompatible() && rawExists) {
+	if !fileType.IsSupported() || !fileType.IsWebCompatible() || rawExists {
 		log.Info(ctx, "media found",
 			"fileType", fileType,
 			"media_path", mediaPath,
