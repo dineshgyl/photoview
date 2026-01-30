@@ -18,15 +18,20 @@ type CounterpartFilesTask struct {
 func (t CounterpartFilesTask) MediaFound(ctx scanner_task.TaskContext, fileInfo fs.FileInfo, mediaPath string) (skip bool, err error) {
 	fileType := media_type.GetMediaType(mediaPath)
 	rawPath, rawExists := media_type.FindRawCounterpart(mediaPath)
-	log.Info(ctx, "media found",
-		"fileType", fileType,
-		"media_path", mediaPath,
-		"supported", fileType.IsSupported(),
-		"DisableRawProcessing", utils.EnvDisableRawProcessing.GetBool(),
-		"fileType.IsWebCompatible()", fileType.IsWebCompatible(),
-		"raw_counterpart_path", rawPath,
-		"raw_counterpart_exists", rawExists)
 
+	// Only disaply log when we are skipping files.
+	if !fileType.IsSupported() ||
+		(utils.EnvDisableRawProcessing.GetBool() && !fileType.IsWebCompatible()) ||
+		(fileType.IsWebCompatible() && rawExists) {
+		log.Info(ctx, "media found",
+			"fileType", fileType,
+			"media_path", mediaPath,
+			"supported", fileType.IsSupported(),
+			"DisableRawProcessing", utils.EnvDisableRawProcessing.GetBool(),
+			"fileType.IsWebCompatible()", fileType.IsWebCompatible(),
+			"raw_counterpart_path", rawPath,
+			"raw_counterpart_exists", rawExists)
+	}
 	if !fileType.IsSupported() {
 		return true, nil
 	}
