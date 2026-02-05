@@ -5,9 +5,9 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
-  schedule:
-    # At 23:18 every Wednesday, 2 hours before `photoview`. Details in https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
-    - cron: '18 23 * * 3'
+#  schedule:
+#    # At 23:18 every Wednesday, 2 hours before `photoview`. Details in https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
+#    - cron: '18 23 * * 3'
 
 env:
   IS_PUSHING_IMAGES: ${{ github.event_name != 'pull_request' && github.repository == 'dineshgyl/photoview' }}
