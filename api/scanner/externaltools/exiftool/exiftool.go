@@ -28,7 +28,7 @@ type Exiftool struct {
 }
 
 const marker = "{ready}\n"
-const bufferSize = 10240
+const bufferSize = 4 * 1024 * 1024  // 4 MB 
 
 // New returns a new instance of Exiftool.
 func New() (*Exiftool, error) {
