@@ -16,16 +16,16 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/stretchr/testify v1.11.1
-	github.com/vektah/gqlparser/v2 v2.5.34
+	github.com/vektah/gqlparser/v2 v2.5.36
 	github.com/wsxiaoys/terminal v0.0.0-20160513160801-0940f3fc43a0
-	golang.org/x/crypto v0.53.0
-	golang.org/x/text v0.38.0
+	golang.org/x/crypto v0.54.0
+	golang.org/x/text v0.40.0
 	gopkg.in/gographics/imagick.v3 v3.7.3
 	gopkg.in/vansante/go-ffprobe.v2 v2.3.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/driver/sqlite v1.6.0
-	gorm.io/gorm v1.31.1
+	gorm.io/gorm v1.31.2
 )
 
 require (
@@ -51,10 +51,10 @@ require (
 	github.com/sosodev/duration v1.4.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/urfave/cli/v3 v3.9.0 // indirect
-	golang.org/x/mod v0.36.0 // indirect
-	golang.org/x/sync v0.21.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/tools v0.45.0 // indirect
+	golang.org/x/mod v0.37.0 // indirect
+	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/tools v0.47.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
